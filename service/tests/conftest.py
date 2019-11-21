@@ -3,25 +3,25 @@ import tempfile
 
 import pytest
 
-from .. import DemoMicroservice
+from .. import norwegianblue
 
 # https://flask.palletsprojects.com/en/1.1.x/testing/
 # https://www.patricksoftwareblog.com/testing-a-flask-application-using-pytest/
 
 @pytest.fixture(scope='module')
 def client():
-    db_fd, DemoMicroservice.app.config['DATABASE'] = tempfile.mkstemp()
-    DemoMicroservice.app.config['TESTING'] = True
+    db_fd, norwegianblue.app.config['DATABASE'] = tempfile.mkstemp()
+    norwegianblue.app.config['TESTING'] = True
 
-    with DemoMicroservice.app.test_client() as client:
-        with DemoMicroservice.app.app_context():
+    with norwegianblue.app.test_client() as client:
+        with norwegianblue.app.app_context():
             pass
         yield client
 
     os.close(db_fd)
-    os.unlink(DemoMicroservice.app.config['DATABASE'])
+    os.unlink(norwegianblue.app.config['DATABASE'])
 
 @pytest.fixture(autouse=True)
 def env_setup(monkeypatch):
-    monkeypatch.setenv('MY_SETTING', 'some-value')
-    monkeypatch.setenv('ANOTHER_SETTING', 'some-value')
+    monkeypatch.setenv('TESTING', "True")
+    monkeypatch.setenv('DEBUG', "True")

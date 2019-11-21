@@ -1,10 +1,11 @@
 version: '3'
 services:
-  import-order:
+  norwegianblue:
     build: .
     image: mofsesam/norwegianblue:latest
     ports:
     - "5000:5000"
     environment:
+      SUBDOMAIN: "sesam"
       DEBUG: "True" 
       LOG_LEVEL: "INFO"
