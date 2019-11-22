@@ -8,9 +8,11 @@ from sesamutils.flask import serve
 
 from collections import OrderedDict
 
+# Default values can be given to optional environment variables by the use of tuples
 required_env_vars = ["SUBDOMAIN"]
-optional_env_vars = ["DEBUG", "LOG_LEVEL", ("API_ROOT","/")] # Default values can be given to optional environment variables by the use of tuples
+optional_env_vars = [("DEBUG","false"), "LOG_LEVEL", ("API_ROOT","/")] 
 config = VariablesConfig(required_env_vars, optional_env_vars=optional_env_vars)
+DEBUG = config.DEBUG in ["true","True","yes"]
 
 app = Flask(__name__)
 
@@ -25,14 +27,13 @@ def get_generic(txt):
     returnDict['http_method'] = request.method
     returnDict['path'] = txt
     returnDict['args'] = request.args
-    # returnDict['header_keys'] = request.headers.keys()
     returnDict['DEBUG'] = config.DEBUG
-    # returnDict['Authorization'] = request.headers.get('Authorization')
     if request.is_json:
         returnDict['payload'] = request.json
     else:
         returnDict['payload'] = [str(data) for data in request.data]
     returnList.append(returnDict)
+    if DEBUG: logger.debug(str(returnList))
     return jsonify(returnList) , 200, {"Content-Type": "application/json"}
 
 if __name__ == "__main__":
