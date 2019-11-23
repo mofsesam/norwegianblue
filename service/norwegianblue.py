@@ -12,6 +12,7 @@ from collections import OrderedDict
 required_env_vars = ["SUBDOMAIN"]
 optional_env_vars = [("DEBUG","false"), "LOG_LEVEL", ("API_ROOT","/")] 
 config = VariablesConfig(required_env_vars, optional_env_vars=optional_env_vars)
+
 DEBUG = config.DEBUG in ["true","True","yes"]
 
 app = Flask(__name__)
@@ -37,8 +38,9 @@ def get_generic(txt):
     return jsonify(returnList) , 200, {"Content-Type": "application/json"}
 
 if __name__ == "__main__":
-    # 
-    # if not config.validate():
-    #     os.sys.exit(1)
+    
+    if not config.validate():
+        logger.error("Environment variables do not validate")
+        os.sys.exit(1)
 
     serve(app)
