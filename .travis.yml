@@ -7,7 +7,9 @@ python:
 services:
   - docker
 
-script: true
+script:
+  - docker-compose build
+  - docker-compose run --rm norwegianblue pytest
 
 # after_success:
 #   - bash <(curl -s https://raw.githubusercontent.com/sesam-community/guidelines/master/after_success.sh)
