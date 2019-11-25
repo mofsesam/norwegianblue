@@ -26,6 +26,7 @@ def get_generic(txt):
     returnDict['Hello'] = f'Polly wants a cracker {datetime.now()}'
     returnDict['base_url']= request.base_url
     returnDict['http_method'] = request.method
+    returnDict['content_type'] = request.content_type 
     returnDict['path'] = txt
     returnDict['args'] = request.args
     returnDict['DEBUG'] = config.DEBUG
